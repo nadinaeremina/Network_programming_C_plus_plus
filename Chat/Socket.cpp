@@ -49,13 +49,13 @@ Socket::~Socket()
 
 bool Socket::SendData(char* buffer) // метод для отправки данных
 {
-	send(dsock, buffer, strlen(buffer), 0); // буфер, длина буфера и смещение по буферу
+	sendto(dsock, buffer, strlen(buffer), 0, (SOCKADDR*)&addr, sizeof(addr)); // буфер, длина буфера и смещение по буферу
 	return true;
 }
 
 bool Socket::RecvData(char* buffer, int size) // метод для получения данных
 {
-	int i = recv(dsock, buffer, size, 0); 
+	int i = recvfrom(dsock, buffer, size, 0, (SOCKADDR*)&addr, (int*)&size);
 	// 'buffer' - это указатель (если он меняется внутри ф-ции - он меняется и снаружи ф-ции)
 	buffer[i] = '\0';
 	return true;
@@ -66,7 +66,7 @@ void Socket::CloseConnection() // для закрытия соед-ия (сокета)
 	closesocket(dsock);
 }
 
-string Socket::SendDataMessage() // отправка сообщения пользователю 
+string Socket::SendDataMessage() // отправка сообщения пользователем
 {
 	// создаем сообщение
 	char msg[MAXSTRLEN];
@@ -99,9 +99,9 @@ void ServerSocket::Listen() // прослушивание по опред адресу
 	// далее включается прослушивание // вторым пар-ом - сколько мы ожидаем клиентов (1)
 	// если мы будем использовать протокол "TCP' - то больше одного клиента не получим
 	// все остальные последующие соед-ия будут стоять в очереди
-	if (listen(dsock, 1) == SOCKET_ERROR) // произошла ошибка на сокете
+	if (listen(dsock, 2) == SOCKET_ERROR) // произошла ошибка на сокете
 	{
-		cout << "Listening arror\n";
+		cout << "Listening rror\n";
 		system("pause");
 		WSACleanup();
 		ERROR(15);

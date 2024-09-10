@@ -76,13 +76,11 @@ void StartServer(int port)
 		// выводим
 		cout << "Received: " << rMsg << endl;
 		
-	    // sMsg = server.SendDataMessage();
+	    sMsg = server.SendDataMessage();
 
 		// отправляем обратно наше сообшение
 		if (strcmp(rMsg, "end") == 0 || sMsg == "end") // если мы получили или отправили сообщение "end"
-		{
 			break;
-		}
 
 		// сервер может дальше считывать данные
 	}
@@ -116,20 +114,8 @@ void ConnecttoServer(int port)
 		cout << "Received: " << rMsg << endl;
 
 		if (strcmp(rMsg, "end") == 0 || sMsg == "end") // если мы получили или отправили сообщение "end"
-		{
 			break;
-		}
-
-		client.CloseConnection(); // клиент закрывает соед-ие
 	}
+
+	client.CloseConnection(); // клиент закрывает соед-ие
 }
-
-//структура timeval{
-//время_t тв_сек;
-//время_t tv_usec;
-//}
-//struct timeval timeout;
-//timeout.tv_sec = SOCKET_READ_TIMEOUT_SEC; // in milli secs
-//timeout.tv_usec = 0;
-
-
