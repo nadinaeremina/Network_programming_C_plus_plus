@@ -34,6 +34,11 @@ Socket::Socket()
 		WSACleanup();
 		exit(11); // 'exit' с ошибкой 11
 	}
+
+	// настройка таймера
+	// Если в течении 2 - х минут сообщение от какого - то клиента не поступило - сервер должен отсоединит его
+	int val = 120000;
+	setsockopt(dsock, SOL_SOCKET, SO_RCVTIMEO, (char*)&val, sizeof(int));
 }
 
 Socket::~Socket()
